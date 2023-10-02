@@ -95,7 +95,7 @@ public:
 
     // Reflection
     Vec3 reflect(const Vec3& normal) const {
-        return *this - 2.0f * this->dot(normal) * normal;
+        return *this - normal * 2.0f * this->dot(normal);
     }
 };
 
