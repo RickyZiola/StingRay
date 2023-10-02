@@ -5,7 +5,10 @@ LIBS=$(shell find -name "*.cpp" ! -name $(MAIN))
 
 # TODO: release build process
 
-default: dbg
+default: lines dbg
+
+lines:
+	@echo "Current line count: $(shell find ./ -type f \( -name "*.cpp" -o -name "*.hpp" \) -exec cat {} \; | wc -l)"
 
 dbg-dirs:
 	@rm -rf -r lib/dbg
@@ -23,9 +26,9 @@ ifneq ($(LIBS),)
 endif
 
 dbg-main:
-	cd bin/dbg && $(CC) -L../../lib/dbg $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main
+	@cd bin/dbg && $(CC) -L../../lib/dbg $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main
 
 dbg-run:
-	bin/dbg/main
+	@bin/dbg/main
 
 dbg: dbg-dirs dbg-libs dbg-main dbg-run
