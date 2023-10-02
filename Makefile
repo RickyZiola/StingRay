@@ -26,7 +26,7 @@ ifneq ($(LIBS),)
 endif
 
 dbg-main:
-	@cd bin/dbg && $(CC) -L../../lib/dbg $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main
+	@cd bin/dbg && $(CC) -L../../lib/dbg $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main -lpng
 
 dbg-run:
 	@bin/dbg/main
