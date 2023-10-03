@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     });
 
         // TODO: multithreading
-    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 16, scene);
+    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 64, scene);
 
 
     img.save(filename);

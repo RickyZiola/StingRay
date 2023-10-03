@@ -10,7 +10,8 @@ private:
     RenderBuffer &buffer;
 
     Ray camera_ray(const Vec3& uv);
-    Vec3 ray_shader(Ray& camera, Object* scene, int max_bounces=5);
+    Vec3 sky_color(const Vec3& dir);
+    Vec3 ray_shader(Ray camera, Object* scene, int max_bounces=5);
 
 public:
     StingrayRenderer(RenderBuffer &buffer) : buffer(buffer) { };

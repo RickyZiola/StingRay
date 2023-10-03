@@ -68,6 +68,11 @@ public:
     }
 
 
+    // Negation
+    Vec3 operator-() const {
+        return Vec3(-this->x, -this->y, -this->z);
+    }
+
     // Dot product
     float dot(const Vec3& v) const {
         return this->x * v.x + this->y * v.y + this->z * v.z;
