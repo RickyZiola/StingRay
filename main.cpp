@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "renderer/buffer.hpp"
+#include "renderer/renderer.hpp"
 
-#define IMG_WIDTH  256
-#define IMG_HEIGHT 256
+#define IMG_WIDTH  3480
+#define IMG_HEIGHT 2160
 
 int main(int argc, char *argv[]) {
     char *filename = (char *)"out.png";
@@ -14,7 +15,11 @@ int main(int argc, char *argv[]) {
 
     printf("StingRay v0.0.0 [WRP]\n");
 
-    RenderBuffer<IMG_WIDTH, IMG_HEIGHT> img = RenderBuffer<IMG_WIDTH, IMG_HEIGHT>();
+    RenderBuffer img = RenderBuffer(IMG_WIDTH, IMG_HEIGHT);
+    StingrayRenderer renderer = StingrayRenderer(img);
+
+    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1);
+
 
     img.save(filename);
 

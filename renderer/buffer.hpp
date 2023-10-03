@@ -7,11 +7,12 @@
 
 class RenderBuffer {
 private:
-    int width;
-    int height;
     unsigned char *buffer;
 
 public:
+    int width;
+    int height;
+
     RenderBuffer(int width, int height) {
         this->width  =  width;
         this->height = height;
@@ -35,7 +36,7 @@ public:
     void set_pixel(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
         this->buffer[y * width * 3 + x * 3 + 0] = r;
         this->buffer[y * width * 3 + x * 3 + 1] = g;
-        this->buffer[y * width * 3 + x * 3 + 1] = b;
+        this->buffer[y * width * 3 + x * 3 + 2] = b;
     }
 };
 
