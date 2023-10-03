@@ -3,8 +3,8 @@
 #include "renderer/buffer.hpp"
 #include "renderer/renderer.hpp"
 
-#define IMG_WIDTH  3480
-#define IMG_HEIGHT 2160
+#define IMG_WIDTH 1280
+#define IMG_HEIGHT 720
 
 int main(int argc, char *argv[]) {
     char *filename = (char *)"out.png";

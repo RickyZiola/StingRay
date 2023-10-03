@@ -1,7 +1,11 @@
 #ifndef RAY_HPP
 #define RAY_HPP
 
+class Ray;
+struct HitInfo;
+
 #include "../util/vec3.hpp"
+#include "../objects/object.hpp"
 
 class Ray {
 private:
@@ -14,6 +18,16 @@ public:
         this->origin = origin;
         this->direction = direction;
     }
+};
+
+struct HitInfo {
+    bool hit;
+    Ray ray;
+
+    Vec3 position;
+    Vec3 normal;
+
+    Object& object;
 };
 
 #endif

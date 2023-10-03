@@ -97,6 +97,11 @@ public:
     Vec3 reflect(const Vec3& normal) const {
         return *this - normal * 2.0f * this->dot(normal);
     }
+
+    // Absolute
+    Vec3 abs() const {
+        return Vec3(fabsf(this->x), fabsf(this->y), fabsf(this->z));
+    }
 };
 
 #endif
