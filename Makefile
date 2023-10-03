@@ -45,11 +45,11 @@ rel-dirs:
 
 rel-libs:
 ifneq ($(LIBS),)
-	@cd lib/release && $(CC) -c $(foreach lib,$(LIBS), ../../$(lib)) -O
+	@cd lib/release && $(CC) -c $(foreach lib,$(LIBS), ../../$(lib)) -O2
 endif
 
 rel-main:
-	@cd bin/release && $(CC) -L../../lib/release $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main -lpng -O
+	@cd bin/release && $(CC) -L../../lib/release $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main -lpng -O2
 
 rel-run:
 	@bin/release/main

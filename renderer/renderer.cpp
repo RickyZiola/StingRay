@@ -2,6 +2,7 @@
 #include "../util/vec3.hpp"
 #include "../objects/sphere.hpp"
 #include <cmath>
+#include <stdio.h>
 
 Ray StingrayRenderer::camera_ray(const Vec3& uv) {
     Vec3 screen_plane = Vec3(uv.x, uv.y, 1.0f);
@@ -19,7 +20,9 @@ Vec3 StingrayRenderer::ray_shader(Ray& camera, Object *scene, int max_bounces) {
 }
 
 void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, Object *scene) {
+    int status_width = startX - endX / 8;
     for (int x = startX; x <= endX; x++) {
+        if (x % status_width == 0) this->buffer.save("_sray_prog.png");
         for (int y = startY; y <= endY; y++) {
             Vec3 uv = Vec3(
                 (float)x / (float)this->buffer.width,

@@ -35,8 +35,8 @@ void save_png(const char *filename, int width, int height, unsigned char *pixels
     png_init_io(png, fp);
     png_set_IHDR(png, info, width, height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
     png_write_info(png, info);
-    for (int row = 0; row < height; row++) {
-        png_write_row(png, pixels + row * width * 3);
+    for (int idx = 0; idx < width * height * 3; idx += width * 3) {
+        png_write_row(png, pixels + idx);
     }
     png_write_end(png, NULL);
     png_destroy_write_struct(&png, &info);
