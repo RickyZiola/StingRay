@@ -102,6 +102,24 @@ public:
     Vec3 abs() const {
         return Vec3(fabsf(this->x), fabsf(this->y), fabsf(this->z));
     }
+
+    // Clamp
+    Vec3 clamp(const Vec3& min, const Vec3& max) const {
+        return Vec3(
+            fmaxf(min.x, fminf(max.x, this->x)),
+            fmaxf(min.y, fminf(max.y, this->y)),
+            fmaxf(min.z, fminf(max.z, this->z))
+        );
+    }
+
+    // Scalar clamp
+    Vec3 clamp(float min, float max) const {
+        return Vec3(
+            fmaxf(min, fminf(max, this->x)),
+            fmaxf(min, fminf(max, this->y)),
+            fmaxf(min, fminf(max, this->z))
+        );
+    }
 };
 
 #endif

@@ -24,10 +24,11 @@ struct HitInfo {
     bool hit;
     Ray ray;
 
+    float distance;
     Vec3 position;
     Vec3 normal;
 
-    Object& object;
+    Object *object;
 };
 
 #endif

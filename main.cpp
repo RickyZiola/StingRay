@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "renderer/buffer.hpp"
 #include "renderer/renderer.hpp"
+#include "objects/scene.hpp"
 
 #define IMG_WIDTH 1280
 #define IMG_HEIGHT 720
@@ -18,7 +19,12 @@ int main(int argc, char *argv[]) {
     RenderBuffer img = RenderBuffer(IMG_WIDTH, IMG_HEIGHT);
     StingrayRenderer renderer = StingrayRenderer(img);
 
-    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1);
+    StingrayScene *scene = new StingrayScene({
+        new Sphere(Vec3(0, 0, 1), 0.5)
+    });
+
+        // TODO: multithreading
+    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 1, scene);
 
 
     img.save(filename);
