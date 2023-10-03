@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "any": "cpp",
+        "system_error": "cpp"
+    }
+}

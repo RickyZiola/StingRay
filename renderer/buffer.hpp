@@ -3,30 +3,40 @@
 
 #include "../util/img.hpp"
 #include <cstring>
+#include <cstdlib>
 
-template <int width, int height>
-    class RenderBuffer {
-    private:
-        unsigned char buffer[width * height * 3];
-    
-    public:
-        RenderBuffer() {
-            this->clear();
-        }
+class RenderBuffer {
+private:
+    int width;
+    int height;
+    unsigned char *buffer;
 
-        void clear() {
-            memset(buffer, 0, width * height * 3);
-        }
+public:
+    RenderBuffer(int width, int height) {
+        this->width  =  width;
+        this->height = height;
 
-        void save(const char *filename) {
-            save_png(filename, width, height, buffer);
-        }
+        this->buffer = (unsigned char *)malloc(this->width * this->height * 3);
+        this->clear();
+    }
 
-        void set_pixel(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
-            this->buffer[y * width * 3 + x * 3 + 0] = r;
-            this->buffer[y * width * 3 + x * 3 + 1] = g;
-            this->buffer[y * width * 3 + x * 3 + 1] = b;
-        }
-    };
+    ~RenderBuffer() {
+        free(this->buffer);
+    }
+
+    void clear() {
+        memset(buffer, 0, this->width * this->height * 3);
+    }
+
+    void save(const char *filename) {
+        save_png(filename, this->width, this->height, buffer);
+    }
+
+    void set_pixel(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
+        this->buffer[y * width * 3 + x * 3 + 0] = r;
+        this->buffer[y * width * 3 + x * 3 + 1] = g;
+        this->buffer[y * width * 3 + x * 3 + 1] = b;
+    }
+};
 
 #endif
