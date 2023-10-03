@@ -26,9 +26,32 @@ ifneq ($(LIBS),)
 endif
 
 dbg-main:
-	@cd bin/dbg && $(CC) -L../../lib/dbg $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main -lpng
+	@cd bin/dbg && $(CC) -L../../lib/dbg $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main -lpng -g -O0
 
 dbg-run:
 	@bin/dbg/main
 
 dbg: dbg-dirs dbg-libs dbg-main dbg-run
+
+rel-dirs:
+	@rm -rf -r lib/release
+	@rm -rf -r bin/release
+
+	@mkdir -p lib
+	@cd lib && mkdir -p release
+
+	@mkdir -p bin
+	@cd bin && mkdir -p release
+
+rel-libs:
+ifneq ($(LIBS),)
+	@cd lib/release && $(CC) -c $(foreach lib,$(LIBS), ../../$(lib)) -O
+endif
+
+rel-main:
+	@cd bin/release && $(CC) -L../../lib/release $(foreach lib,$(LIBS),'-l:$(notdir $(basename $(lib))).o' ) ../../$(MAIN) -o main -lpng -O
+
+rel-run:
+	@bin/release/main
+
+release: rel-dirs rel-libs rel-main rel-run
