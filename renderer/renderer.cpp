@@ -15,6 +15,8 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY) {
             uv.x -= 1.0f;
             uv.y -= 1.0f;
 
+            uv.y /= (float)this->buffer.width / (float)this->buffer.height;
+
             Vec3 color = Vec3(
                 fabs(uv.x), fabs(uv.y), fabs(uv.z) );
 
