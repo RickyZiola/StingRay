@@ -3,6 +3,7 @@
 
 #include "../renderer/material.hpp"
 #include "../util/vec3.hpp"
+#include "../util/rand.hpp"
 
 class ColorMaterial : public Material {
 private:
@@ -13,6 +14,9 @@ public:
     }
 
     Vec3 color() { return this->col; }
+    Vec3 scatter(const Vec3& rayDir, const Vec3& norm) {
+        return (norm + rand_in_unit_sphere()).normalize();
+    }
 };
 
 #endif

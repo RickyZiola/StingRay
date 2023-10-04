@@ -2,6 +2,7 @@
 #define BUFFER_HPP
 
 #include "../util/img.hpp"
+#include "../util/vec3.hpp"
 #include <cstring>
 #include <cstdlib>
 
@@ -37,6 +38,29 @@ public:
         this->buffer[y * width * 3 + x * 3 + 0] = r;
         this->buffer[y * width * 3 + x * 3 + 1] = g;
         this->buffer[y * width * 3 + x * 3 + 2] = b;
+    }
+
+    void set_pixel(int x, int y, Vec3 col) {
+        col = col.clamp(0.0, 1.0);
+
+        this->buffer[y * width * 3 + x * 3 + 0] = (int)(col.x * 255.0);
+        this->buffer[y * width * 3 + x * 3 + 1] = (int)(col.y * 255.0);
+        this->buffer[y * width * 3 + x * 3 + 2] = (int)(col.z * 255.0);
+    }
+
+    Vec3 get_pixel(int x, int y) {
+        return Vec3(
+            ((float)this->buffer[y * width * 3 + x * 3 + 0] / 255.0),
+            ((float)this->buffer[y * width * 3 + x * 3 + 1] / 255.0),
+            ((float)this->buffer[y * width * 3 + x * 3 + 2] / 255.0) );
+    }
+
+    unsigned char *get_buffer() {
+        return this->buffer;
+    }
+
+    void cpy(RenderBuffer &other) {
+        memcpy(this->buffer, other.buffer, this->width * this->height * 3);
     }
 };
 

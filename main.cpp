@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "renderer/buffer.hpp"
 #include "renderer/renderer.hpp"
+#include "renderer/denoiser.hpp"
 #include "objects/scene.hpp"
 #include "objects/colormat.hpp"
 
@@ -19,6 +20,7 @@ int main(int argc, char *argv[]) {
 
     RenderBuffer img = RenderBuffer(IMG_WIDTH, IMG_HEIGHT);
     StingrayRenderer renderer = StingrayRenderer(img);
+    StingrayDenoiser denoiser = StingrayDenoiser(img);
 
     ColorMaterial red   = ColorMaterial(Vec3(0.8, 0.0, 0.0));
     ColorMaterial green = ColorMaterial(Vec3(0.0, 0.8, 0.0));
@@ -34,8 +36,9 @@ int main(int argc, char *argv[]) {
     });
 
         // TODO: multithreading
-    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 8, scene);
-
+    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 64, scene);
+    printf("Rendering finished, denoising...\n");
+    denoiser.denoise();
 
     img.save(filename);
 

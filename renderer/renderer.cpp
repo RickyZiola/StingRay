@@ -41,14 +41,14 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
         color = color * intersect.object->mat()->color();
 
         camera.origin = intersect.position + intersect.normal * 0.0001f;
-        camera.direction = rand_in_hemisphere(intersect.normal);
+        camera.direction = intersect.object->mat()->scatter(camera.direction, intersect.normal);
     }
 
     return light;
 }
 
 void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene) {
-    int status_width = startX - endX / 8;
+    int status_width = (startX - endX) / 8;
     for (int x = startX; x <= endX; x++) {
         if (x % status_width == 0) this->buffer.save("_sray_prog.png");
         for (int y = startY; y <= endY; y++) {
@@ -73,7 +73,12 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY, int sa
                 color = color + ray_shader(camera, scene);
             }
             color = color / (float)samples;
-            color = color.clamp(0.0f, 1.0f);
+
+            // Gamma correct
+            color.x = powf(color.x, 1.0/2.2);
+            color.y = powf(color.y, 1.0/2.2);
+            color.z = powf(color.z, 1.0/2.2);
+            color = color.clamp(0.0, 1.0);
 
             this->buffer.set_pixel(x, y, (int)(color.x * 255.0), (int)(color.y * 255.0), (int)(color.z * 255.0));
         }
