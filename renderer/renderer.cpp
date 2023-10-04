@@ -71,7 +71,7 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY, int sa
             for (int i = 0; i < samples; i++) {
                     // Antialiasing by offestting the eye position by a small amount
                     // TODO: faster random number generation
-                Ray camera = Ray (orig_camera.origin + Vec3(randf(), randf(), randf()) * 0.002, orig_camera.direction);
+                Ray camera = Ray (orig_camera.origin + Vec3(randf(), randf(), randf()) * 0.004, orig_camera.direction);
                 color = color + ray_shader(camera, scene, 15);
             }
             color = color / (float)samples;

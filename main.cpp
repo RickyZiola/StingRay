@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <thread>
 #include "renderer/buffer.hpp"
 #include "renderer/renderer.hpp"
 #include "renderer/denoiser.hpp"
