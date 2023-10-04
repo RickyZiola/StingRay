@@ -14,6 +14,7 @@ public:
     void denoise() {
         int texelSize = 10;
         int halfTexelSize = texelSize / 2;
+        float sigma = 10.0f;
         RenderBuffer newBuf = RenderBuffer(this->buf.width, this->buf.height);
 
         for (int x = halfTexelSize; x < this->buf.width - halfTexelSize; ++x) {
@@ -26,7 +27,7 @@ public:
                 for (int oX = -halfTexelSize; oX < halfTexelSize; ++oX) {
                     for (int oY = -halfTexelSize; oY < halfTexelSize; ++oY) {
                         Vec3 col = this->buf.get_pixel(x+oX, y+oY);
-                        float diff = 1 - (col - centerColor).length();
+                        float diff = (1 - (col - centerColor).length()) * expf(-(oX * oX + oY * oY) / (2 * sigma * sigma));
                         brightness += diff;
                         color = color + col * diff;
                     }

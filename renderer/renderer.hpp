@@ -17,7 +17,7 @@ public:
     StingrayRenderer(RenderBuffer &buffer) : buffer(buffer) { };
 
     // Renders a portion of the image (in a rectangle)
-    void render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene); 
+    void render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene, int thread_id, int yoff, int height); 
 };
 
 #endif
