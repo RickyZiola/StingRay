@@ -125,6 +125,11 @@ public:
             fmaxf(min, fminf(max, this->z))
         );
     }
+
+    // Linear interpolation
+    static Vec3 mix(Vec3 a, Vec3 b, float t) {
+        return a + (b - a) * t;
+    }
 };
 
 #endif

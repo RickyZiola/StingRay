@@ -47,16 +47,22 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
     return light;
 }
 
-void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene, int thread_id, int yoff, int height) {
+void StingrayRenderer::render(int samples, StingrayScene *scene) {
+    this->render(0,0, this->buffer.width - 1, this->buffer.height - 1, samples, scene);
+}
+
+void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene) {
     int status_rep_width = (endX - startX) / 32;
     for (int x = startX; x <= endX; x++) {
-        if (x % status_rep_width == 0) printf("%.2f%% done.\n", (float)(x - startX) / (float)(endX - startX) * 100.0);
+        if (x % status_rep_width == 0) {
+            this->buffer.save("_sray_prog.png");
+            printf("%.2f%% done.\n", (float)(x - startX) / (float)(endX - startX) * 100.0);
+        }
         for (int y = startY; y <= endY; y++) {
             Vec3 uv = Vec3(
-                (float)x        / (float)this->buffer.width,
-                (float)(y+yoff) / (float)height,
+                (float)x / (float)this->buffer.width,
+                (float)y / (float)this->buffer.height,
                 0.0 );
-            this->buffer.set_pixel(x,y,uv); continue;
             uv.x *=  2.0f;
             uv.y *= -2.0f;
 
