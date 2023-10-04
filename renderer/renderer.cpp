@@ -24,7 +24,6 @@ Vec3 StingrayRenderer::sky_color(const Vec3& dir) {
 }
 
 Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_bounces) {
-    //return camera.direction.abs();
     HitInfo intersect = scene->intersect(camera);
 
     Vec3 color = Vec3(1.0f);
@@ -36,9 +35,10 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
             light = light + sky_color(camera.direction) * color;
             break;
         }
-            // TODO: emission & color
-        light = light + color * Vec3(0.0);
+        light = light + color * intersect.object->mat()->emission();
         color = color * intersect.object->mat()->color();
+
+        if (color.length() < 0.001) break;
 
         camera.origin = intersect.position + intersect.normal * 0.0001f;
         camera.direction = intersect.object->mat()->scatter(camera.direction, intersect.normal);
@@ -48,9 +48,11 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
 }
 
 void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene) {
-    int status_width = (startX - endX) / 8;
+    int status_width = (startX - endX) / 32;
     for (int x = startX; x <= endX; x++) {
-        if (x % status_width == 0) this->buffer.save("_sray_prog.png");
+        if (x % status_width == 0) {
+            this->buffer.save("_sray_prog.png");
+        }
         for (int y = startY; y <= endY; y++) {
             Vec3 uv = Vec3(
                 (float)x / (float)this->buffer.width,
@@ -70,7 +72,7 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY, int sa
                     // Antialiasing by offestting the eye position by a small amount
                     // TODO: faster random number generation
                 Ray camera = Ray (orig_camera.origin + Vec3(randf(), randf(), randf()) * 0.002, orig_camera.direction);
-                color = color + ray_shader(camera, scene);
+                color = color + ray_shader(camera, scene, 15);
             }
             color = color / (float)samples;
 

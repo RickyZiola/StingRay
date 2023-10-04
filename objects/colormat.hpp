@@ -14,6 +14,8 @@ public:
     }
 
     Vec3 color() { return this->col; }
+    Vec3 emission() { return Vec3(0.0); }
+    
     Vec3 scatter(const Vec3& rayDir, const Vec3& norm) {
         return (norm + rand_in_unit_sphere()).normalize();
     }

@@ -5,6 +5,7 @@
 #include "renderer/denoiser.hpp"
 #include "objects/scene.hpp"
 #include "objects/colormat.hpp"
+#include "objects/emissive.hpp"
 
 #define IMG_WIDTH 1280
 #define IMG_HEIGHT 720
@@ -27,16 +28,25 @@ int main(int argc, char *argv[]) {
     ColorMaterial blue  = ColorMaterial(Vec3(0.0, 0.0, 0.8));
     ColorMaterial white = ColorMaterial(Vec3(0.8, 0.8, 0.8));
 
+    EmissiveMaterial light  = EmissiveMaterial(Vec3(1.0, 1.0, 1.0));
+    EmissiveMaterial light2 = EmissiveMaterial(Vec3(0.5, 0.5, 0.5));
+
     StingrayScene *scene = new StingrayScene({
-        new Sphere(Vec3(-0.5, 0, 1), 0.5,           &white),
+        new Sphere(Vec3(-0.5, 0, 1), 0.5,           &light),
         new Sphere(Vec3( 0.5, 0, 1), 0.5,           &blue),
         new Sphere(Vec3(-1.5, 0, 1), 0.5,           &green),
         new Sphere(Vec3( 1.5, 0, 1), 0.5,           &red),
-        new Sphere(Vec3(0.0, -9999.5, 0.0), 9999.0, &white)
+
+        new Sphere(Vec3(0.0, -9999.5,  0.0), 9999.0, &white),
+        new Sphere(Vec3(0.0, 10000,    0.0), 9999.0, &white),
+        new Sphere(Vec3(-10001, 0.0,   0.0), 9999.0, &white),
+        new Sphere(Vec3(10001 ,  0.0,  0.0), 9999.0, &white),
+        new Sphere(Vec3(0.0, 0.0,  10000.5), 9999.0, &light2),
+        new Sphere(Vec3(0.0, 0.0, -10000.5), 9999.0, &white)
     });
 
         // TODO: multithreading
-    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 64, scene);
+    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 128, scene);
     printf("Rendering finished, denoising...\n");
     denoiser.denoise();
 
