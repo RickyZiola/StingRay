@@ -20,12 +20,15 @@ int main(int argc, char *argv[]) {
     StingrayRenderer renderer = StingrayRenderer(img);
 
     StingrayScene *scene = new StingrayScene({
-        new Sphere(Vec3(0, 0, 1),   0.5),
-        new Sphere(Vec3(0.5, 0, 1), 0.5),
+        new Sphere(Vec3(-0.5, 0, 1), 0.5),
+        new Sphere(Vec3( 0.5, 0, 1), 0.5),
+        new Sphere(Vec3(-1.5, 0, 1), 0.5),
+        new Sphere(Vec3( 1.5, 0, 1), 0.5),
+        new Sphere(Vec3(0.0, -9999.5, 0.0), 9999.0)
     });
 
         // TODO: multithreading
-    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 64, scene);
+    renderer.render(0, 0, IMG_WIDTH - 1, IMG_HEIGHT - 1, 8, scene);
 
 
     img.save(filename);

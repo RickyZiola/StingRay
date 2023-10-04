@@ -6,27 +6,26 @@
 #include <stdio.h>
 
 Ray StingrayRenderer::camera_ray(const Vec3& uv) {
-    float FOV = .5 * 3.1415926535897932; // 90 degrees
+    float FOV = .5 * 3.1415926535897932; // FOV in radians
 
     float angle_xz = (FOV / 2.0f) * uv.x;
     float angle_yz = (FOV / 2.0f) * uv.y;
+    float loc_z = cos(angle_xz) * cos(angle_yz);
 
-    float loc_y = sin(angle_yz);
-    float loc_x = sin(angle_xz);
-    float loc_z = cos(angle_yz) * cos(angle_xz);
+     Vec3 screen_plane = Vec3(uv.x, uv.y, loc_z);
+    //Vec3 screen_plane = Vec3(loc_x, loc_y, 1.0);
+    Vec3 eye = Vec3(0.0f, 0.0f, -1.0f);
 
-    Vec3 screen_plane = Vec3(loc_x, loc_y, loc_z).normalize();
-    Vec3 eye = Vec3(0.0f); // Put the eye at the origin (for now)
-
-    Vec3 direction = (screen_plane - eye).normalize();
+    Vec3 direction = screen_plane.normalize();
     return Ray(eye, direction);
 }
 
 Vec3 StingrayRenderer::sky_color(const Vec3& dir) {
-    return Vec3(fmaxf(0.0, fminf(1.0, powf(Vec3(3, 3, -3).normalize().dot(dir), 15)))) * Vec3(.9, .9, .7) + Vec3(0.3, 0.4, 0.9);
+    return Vec3(fmaxf(0.0, fminf(1.0, powf(Vec3(3, 3, 3).normalize().dot(dir), 15)))) * Vec3(.9, .9, .7) + Vec3(0.3, 0.4, 0.9);
 }
 
 Vec3 StingrayRenderer::ray_shader(Ray camera, Object *scene, int max_bounces) {
+    //return camera.direction.abs();
     HitInfo intersect = scene->intersect(camera);
 
     Vec3 color = Vec3(1.0f);
@@ -64,7 +63,7 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY, int sa
             uv.x -= 1.0f;
             uv.y += 1.0f;
 
-            uv.x *= (float)this->buffer.width / (float)this->buffer.height;
+            uv.y *= (float)this->buffer.height / (float)this->buffer.width;
             Ray orig_camera = this->camera_ray(uv);
             Vec3 color = Vec3(0);
 
