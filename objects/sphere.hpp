@@ -4,18 +4,19 @@
 #include "object.hpp"
 #include "../util/vec3.hpp"
 #include "../renderer/ray.hpp"
+#include "../renderer/material.hpp"
 
 class Sphere : public Object {
 private:
     Vec3 center;
     float radius;
+    Material *material;
 
 public:
-    Sphere() {}
-
-    Sphere(const Vec3& center, float radius) {
+    Sphere(const Vec3& center, float radius, Material *mat) {
         this->center = center;
         this->radius = radius;
+        this->material = mat;
     }
 
     // Thanks to https://raytracing.github.io/books/RayTracingInOneWeekend.html
@@ -38,6 +39,8 @@ public:
             return HitInfo { true, r, dist, pos, normal, this };
         }
     }
+
+    Material *mat() { return this->material; }
 };
 
 #endif

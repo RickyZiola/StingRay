@@ -5,7 +5,7 @@
 #include "sphere.hpp"
 #include <vector>
 
-class StingrayScene : public Object {
+class StingrayScene {
 private:
     std::vector<Object*> objects; // eww C++ style code
 

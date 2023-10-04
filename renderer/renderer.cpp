@@ -6,14 +6,13 @@
 #include <stdio.h>
 
 Ray StingrayRenderer::camera_ray(const Vec3& uv) {
-    float FOV = .5 * 3.1415926535897932; // FOV in radians
+    float FOV = 0.5 * 3.1415926535897932; // FOV in radians (set to 90deg)
 
     float angle_xz = (FOV / 2.0f) * uv.x;
     float angle_yz = (FOV / 2.0f) * uv.y;
     float loc_z = cos(angle_xz) * cos(angle_yz);
 
-     Vec3 screen_plane = Vec3(uv.x, uv.y, loc_z);
-    //Vec3 screen_plane = Vec3(loc_x, loc_y, 1.0);
+    Vec3 screen_plane = Vec3(uv.x, uv.y, loc_z);
     Vec3 eye = Vec3(0.0f, 0.0f, -1.0f);
 
     Vec3 direction = screen_plane.normalize();
@@ -24,7 +23,7 @@ Vec3 StingrayRenderer::sky_color(const Vec3& dir) {
     return Vec3(fmaxf(0.0, fminf(1.0, powf(Vec3(3, 3, 3).normalize().dot(dir), 15)))) * Vec3(.9, .9, .7) + Vec3(0.3, 0.4, 0.9);
 }
 
-Vec3 StingrayRenderer::ray_shader(Ray camera, Object *scene, int max_bounces) {
+Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_bounces) {
     //return camera.direction.abs();
     HitInfo intersect = scene->intersect(camera);
 
@@ -39,7 +38,7 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, Object *scene, int max_bounces) {
         }
             // TODO: emission & color
         light = light + color * Vec3(0.0);
-        color = color * Vec3(0.8);
+        color = color * intersect.object->mat()->color();
 
         camera.origin = intersect.position + intersect.normal * 0.0001f;
         camera.direction = rand_in_hemisphere(intersect.normal);
@@ -48,7 +47,7 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, Object *scene, int max_bounces) {
     return light;
 }
 
-void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, Object *scene) {
+void StingrayRenderer::render(int startX, int startY, int endX, int endY, int samples, StingrayScene *scene) {
     int status_width = startX - endX / 8;
     for (int x = startX; x <= endX; x++) {
         if (x % status_width == 0) this->buffer.save("_sray_prog.png");
