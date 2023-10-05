@@ -28,30 +28,36 @@ int main(int argc, char *argv[]) {
     StingrayRenderer renderer = StingrayRenderer(img);
     StingrayDenoiser denoiser = StingrayDenoiser(img);
 
-    ColorMaterial red   = ColorMaterial(Vec3(0.8, 0.0, 0.0));
-    VolumeMaterial dust = VolumeMaterial(Vec3(0.8, 0.8, 0.6));
+    EmissiveMaterial red   = EmissiveMaterial(Vec3(0.3, 0.0, 0.0));
     GlossyMaterial blue  = GlossyMaterial(Vec3(0.3, 0.3, 0.8), 0.3);
+    VolumeMaterial smoke = VolumeMaterial(Vec3(0.2));
     ColorMaterial white = ColorMaterial(Vec3(0.8, 0.8, 0.8));
 
-    EmissiveMaterial light  = EmissiveMaterial(Vec3(1.0, 1.0, 0.0));
-    EmissiveMaterial light2 = EmissiveMaterial(Vec3(0.9, 0.9, 0.9));
+
+    VolumeMaterial dust = VolumeMaterial(Vec3(0.8, 0.8, 0.6));
+
+    EmissiveMaterial light  = EmissiveMaterial(Vec3(0.8, 0.8, 0.6));
+    EmissiveMaterial light2 = EmissiveMaterial(Vec3(0.3, 0.3, 0.3));
 
     StingrayScene *scene = new StingrayScene({
         new Sphere(Vec3(-0.5, 0, 1), 0.5,           &light),
         new Sphere(Vec3( 0.5, 0, 1), 0.5,           &blue),
-        new Volume(
-            new Sphere(Vec3(0.0, 0.0, 19.5), 20, NULL),  &dust, 0.6),
+        //new Volume(  // Uncomment for fog / dust effect
+        //    new Sphere(Vec3(0.0, 0.0, 19.5), 20, NULL),  &dust, 0.3),
         new Sphere(Vec3( 1.5, 0, 1), 0.5,           &red),
+        
+        new Volume(
+            new Sphere(Vec3(-1.5, 0.5, 1), 1.0, NULL),  &smoke, 0.9),
 
         new Sphere(Vec3(0.0, -9999.5,  0.0), 9999.0, &white),
         new Sphere(Vec3(0.0, 10000,    0.0), 9999.0, &white),
         new Sphere(Vec3(-10001, 0.0,   0.0), 9999.0, &white),
         new Sphere(Vec3(10001 ,  0.0,  0.0), 9999.0, &white),
-        new Sphere(Vec3(0.0, 0.0,  10000.5), 9999.0, &light2),
+        new Sphere(Vec3(0.0, 0.0,  10000.5), 9999.0, &white),
         new Sphere(Vec3(0.0, 0.0, -10000.5), 9999.0, &white)
     });
 
-    renderer.render(32, scene);
+    renderer.render(16, scene);
     printf("Rendering finished, denoising...\n");
     denoiser.denoise();
 
