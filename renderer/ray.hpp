@@ -25,10 +25,12 @@ private:
 public:
     Vec3 origin;
     Vec3 direction;
+    bool viewRay;
 
-    Ray(Vec3 origin, Vec3 direction) {
+    Ray(Vec3 origin, Vec3 direction, bool view) {
         this->origin = origin;
         this->direction = direction;
+        this->viewRay = view;
     }
 };
 

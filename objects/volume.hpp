@@ -55,7 +55,7 @@ public:
             return front_int;
         }
 
-        Ray back_ray = Ray(front_int.position + r.direction *.01, r.direction);
+        Ray back_ray = Ray(front_int.position + r.direction *.01, r.direction, false);
         HitInfo back_int = scene->intersect(back_ray);
         if (!back_int.hit) {
             return back_int;

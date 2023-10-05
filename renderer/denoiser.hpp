@@ -14,7 +14,7 @@ public:
     void denoise() {
         int texelSize = 10;
         int halfTexelSize = texelSize / 2;
-        float sigma = 10.0f;
+        float sigma = 5.0f;
         RenderBuffer newBuf = RenderBuffer(this->buf.width, this->buf.height);
 
         for (int x = halfTexelSize; x < this->buf.width - halfTexelSize; ++x) {

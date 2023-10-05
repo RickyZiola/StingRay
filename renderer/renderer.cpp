@@ -16,7 +16,7 @@ Ray StingrayRenderer::camera_ray(const Vec3& uv) {
     Vec3 eye = Vec3(0.0f, 0.0f, -1.0f);
 
     Vec3 direction = screen_plane.normalize();
-    return Ray(eye, direction);
+    return Ray(eye, direction, true);
 }
 
 Vec3 StingrayRenderer::sky_color(const Vec3& dir) {
@@ -77,8 +77,8 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY, int sa
             for (int i = 0; i < samples; i++) {
                     // Antialiasing by offestting the eye position by a small amount
                     // TODO: faster random number generation
-                Ray camera = Ray (orig_camera.origin + Vec3(randf(), randf(), randf()) * 0.004, orig_camera.direction);
-                color = color + ray_shader(camera, scene, 15);
+                Ray camera = Ray (orig_camera.origin + Vec3(randf(), randf(), randf()) * 0.004, orig_camera.direction, true);
+                color = color + ray_shader(camera, scene, 32);
             }
             color = color / (float)samples;
 

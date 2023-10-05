@@ -22,12 +22,10 @@ public:
 
     // Thanks to https://raytracing.github.io/books/RayTracingInOneWeekend.html
     HitInfo intersect(Ray& r, StingrayScene *scene) {
-        if ((r.origin - this->center).length() < this->radius) {
-            Ray newRay = Ray(r.origin + r.direction * radius * 2.1, -r.direction);
-            HitInfo intersect_info = this->intersect(newRay, scene);
-            intersect_info.distance = (r.origin - intersect_info.position).length();
-            return intersect_info;
+        if (r.viewRay && (r.origin - this->center).length() < this->radius) {
+            return HitInfo { true, &r, 0.0, r.origin, Vec3(0.57735026919), this };
         }
+
         Vec3 oc = r.origin - center;
         float a = r.direction.dot(r.direction);
         float half_b = oc.dot(r.direction);
