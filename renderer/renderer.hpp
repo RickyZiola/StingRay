@@ -5,6 +5,9 @@
 #include "ray.hpp"
 #include "../objects/scene.hpp"
 
+/**
+ * Renderer class
+*/
 class StingrayRenderer {
 private:
     RenderBuffer &buffer;
@@ -14,6 +17,9 @@ private:
     Vec3 ray_shader(Ray camera, StingrayScene *scene, int max_bounces=5);
 
 public:
+    /**
+     * Construct a new renderer with the given render buffer
+    */
     StingrayRenderer(RenderBuffer &buffer) : buffer(buffer) { };
 
     // Render the whole image

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <png.h>
 
+// thanks to chatgpt
 void save_png(const char *filename, int width, int height, unsigned char *pixels) {
     FILE *fp = fopen(filename, "wb");
     if (!fp) {

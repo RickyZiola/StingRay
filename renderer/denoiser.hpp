@@ -5,12 +5,22 @@
 #include "../util/vec3.hpp"
 #include <stdio.h>
 
+/**
+ * Simple gaussian denoising filter.
+*/
 class StingrayDenoiser {
 private:
     RenderBuffer& buf;
 
 public:
+    /**
+     * Construct a new denoiser with the given render buffer.
+    */
     StingrayDenoiser(RenderBuffer& buf) : buf(buf) { }
+
+    /**
+     * Denoise the buffer.
+    */
     void denoise() {
         int texelSize = 10;
         int halfTexelSize = texelSize / 2;

@@ -1,10 +1,11 @@
 #include "rand.hpp"
 
-// TODO: faster RNG (no stdlib)
+unsigned int seed = 0;
 float randf() {
-    return (float)rand() / (float)RAND_MAX;
+    seed = (seed * 1664525u + 1013904223u) & 0xFFFFFFFFu;
+    return ((float)(seed) / (float)0xFFFFFFFFu);
 }
-
+// TODO: (maybe) gaussian distribution for faster sphere generation.
 Vec3 rand_in_unit_sphere() {
     Vec3 dir = Vec3(randf(), randf(), randf());
     while(dir.dot(dir) > 1) dir = Vec3(randf(), randf(), randf());

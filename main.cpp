@@ -39,23 +39,25 @@ int main(int argc, char *argv[]) {
     EmissiveMaterial light  = EmissiveMaterial(Vec3(0.9, 0.9, 0.8));
 
     StingrayScene *scene = new StingrayScene({
-        new Sphere(Vec3(-0.5, 0, 1), 0.5,   &light),
-        new Sphere(Vec3( 0.5, 0, 1), 0.5,   &blue),
-        new Volume(
-            new Sphere(Vec3(0.0, 0.0, 0.0), 200, NULL), &dust, 0.1),
-        new Sphere(Vec3( 1.5, 0, 1),  0.5,  &red),
-        new Sphere(Vec3( -1.5, 0, 1), 0.5,  &green),
+        new Sphere(Vec3(-0.5, 0, 1), 0.5,   &light),  // Emissive white sphere
+        new Sphere(Vec3( 0.5, 0, 1), 0.5,   &blue),   // Glossy blue sphere
+        new Volume(                   // Dusty volume enclosing everything
+            new Sphere(Vec3(0.0, 0.0, 0.0), 200, NULL), &dust, 0.3),
+        new Sphere(Vec3( 1.5, 0, 1),  0.5,  &red),    // Glowing red sphere
+        new Sphere(Vec3( -1.5, 0, 1), 0.5,  &green),  // Diffuse green sphere
         
 
-        new Sphere(Vec3(0.0, -9999.5,  0.0), 9999.0, &white),
-        new Sphere(Vec3(0.0,   10000,  0.0), 9999.0, &white),
-        new Sphere(Vec3(-10001,  0.0,  0.0), 9999.0, &white),
-        new Sphere(Vec3( 10001,  0.0,  0.0), 9999.0, &white),
-        new Sphere(Vec3(0.0, 0.0,  10000.5), 9999.0, &white),
-        new Sphere(Vec3(0.0, 0.0, -10000.5), 9999.0, &white)
+        new Sphere(Vec3(0.0, -9999.5,  0.0), 9999.0, &white),  // Floor
+        new Sphere(Vec3(0.0,   10000,  0.0), 9999.0, &white),  // Ceiling
+        new Sphere(Vec3(-10001,  0.0,  0.0), 9999.0, &white),  // Left wall
+        new Sphere(Vec3( 10001,  0.0,  0.0), 9999.0, &white),  // Right wall
+        new Sphere(Vec3(0.0, 0.0,  10000.5), 9999.0, &white),  // Back wall
+        new Sphere(Vec3(0.0, 0.0, -10000.5), 9999.0, &white)   // Front wall (behind the camera)
     });
 
-    renderer.render(16, scene);
+
+
+    renderer.render(128, scene);
     printf("Rendering finished, denoising...\n");
     denoiser.denoise();
 

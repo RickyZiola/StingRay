@@ -7,6 +7,9 @@
 #include "../renderer/material.hpp"
 #include "scene.hpp"
 
+/**
+ * Sphere class.
+*/
 class Sphere : public Object {
 private:
     Vec3 center;
@@ -14,12 +17,19 @@ private:
     Material *material;
 
 public:
+    /**
+     * Create a new sphere with the given center, radius and material.
+    */
     Sphere(const Vec3& center, float radius, Material *mat) {
         this->center = center;
         this->radius = radius;
         this->material = mat;
     }
 
+    /**
+     * Check if the given ray intersects the sphere.
+     * If the ray is a view ray, the intersection point may be inside the sphere. If not, it must be on the surface.
+    */
     // Thanks to https://raytracing.github.io/books/RayTracingInOneWeekend.html
     HitInfo intersect(Ray& r, StingrayScene *scene) {
         if (r.viewRay && (r.origin - this->center).length() < this->radius) {
@@ -45,6 +55,9 @@ public:
         }
     }
 
+    /**
+     * Get the material of the sphere.
+    */
     Material *mat() { return this->material; }
 };
 
