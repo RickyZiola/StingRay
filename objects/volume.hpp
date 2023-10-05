@@ -16,9 +16,9 @@
 */
 class VolumeMaterial : public Material {
 private:
-    Vec3 col;
 
 public:
+    Vec3 col;
     VolumeMaterial(const Vec3 &col) {
         this->col = col;
     }
@@ -30,7 +30,7 @@ public:
     }
 
     Vec3 scatter(const Vec3& rayDir, const Vec3& normal) {
-        return rand_in_unit_sphere();
+        return (rayDir*0.125 + rand_in_unit_sphere() * (rayDir + rand_in_unit_sphere()*0.5)).normalize();
     }
 };
 
@@ -73,6 +73,7 @@ public:
 
         float dist = (front_int.position - back_int.position).length();
         bool hit = randf() < (dist * density);
+
         if (!hit) return HitInfo { false, &r, 0.0, Vec3(), Vec3(), this };
 
         Vec3 pos = front_int.position + r.direction * dist * randf();

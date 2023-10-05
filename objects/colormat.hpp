@@ -31,10 +31,11 @@ public:
 
     /**
      * Scatter a ray on the material.
-     * This is lambertian scattering.
+     * This is uniform diffuse scattering, I find it looks better than lambertian scattering.
     */
     Vec3 scatter(const Vec3& rayDir, const Vec3& norm) {
-        return (norm + rand_in_unit_sphere()).normalize();
+        return rand_in_hemisphere(norm);
+        //return (norm + rand_in_unit_sphere()).normalize();
     }
 };
 
