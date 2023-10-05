@@ -2,9 +2,21 @@
 #define RAY_HPP
 
 class Ray;
-struct HitInfo;
+class Object;
 
 #include "../util/vec3.hpp"
+
+struct HitInfo {
+    bool hit;
+    Ray *ray;
+
+    float distance;
+    Vec3 position;
+    Vec3 normal;
+
+    Object *object;
+};
+
 #include "../objects/object.hpp"
 
 class Ray {
@@ -20,15 +32,5 @@ public:
     }
 };
 
-struct HitInfo {
-    bool hit;
-    Ray ray;
-
-    float distance;
-    Vec3 position;
-    Vec3 normal;
-
-    Object *object;
-};
 
 #endif

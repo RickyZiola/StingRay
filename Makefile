@@ -1,4 +1,4 @@
-CC=g++
+CC=clang++
 MAIN=main.cpp
 
 LIBS=$(shell find -name "*.cpp" ! -name $(MAIN))

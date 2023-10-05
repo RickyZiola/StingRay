@@ -6,8 +6,8 @@
 
 class EmissiveMaterial : public Material {
 private:
-    Vec3 col;
 public:
+    Vec3 col;
     EmissiveMaterial(Vec3 col) {
         this->col = col;
     }

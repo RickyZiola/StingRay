@@ -1,8 +1,10 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
+class StingrayScene;
+
+#include "../renderer/ray.hpp"
 #include "object.hpp"
-#include "sphere.hpp"
 #include <vector>
 
 class StingrayScene {
@@ -19,12 +21,12 @@ public:
 
     StingrayScene(const std::vector<Object*>& objects) : objects(objects) { }
 
-    HitInfo intersect(const Ray& r) {
+    HitInfo intersect(Ray& r) {
         Object *closest = NULL;
-        HitInfo closest_hit = HitInfo { false, r, 0.0, Vec3(), Vec3(), NULL };
+        HitInfo closest_hit = HitInfo { false, &r, 0.0, Vec3(), Vec3(), NULL };
         float min_dist = 512; // Farclip
         for (int i = 0; i < objects.size(); ++i) {
-            HitInfo hit = objects[i]->intersect(r);
+            HitInfo hit = objects[i]->intersect(r, this);
             if (hit.hit && hit.distance < min_dist) {
                 closest = objects[i];
                 closest_hit = hit;

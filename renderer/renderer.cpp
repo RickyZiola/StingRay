@@ -35,13 +35,14 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
             light = light + sky_color(camera.direction) * color;
             break;
         }
+        //printf("0x%08x\n", intersect.object->mat());
         light = light + color * intersect.object->mat()->emission();
         color = color * intersect.object->mat()->color();
 
         if (color.length() < 0.001) break;
 
         camera.origin = intersect.position + intersect.normal * 0.0001f;
-        camera.direction = intersect.object->mat()->scatter(camera.direction, intersect.normal);
+        camera.direction = intersect.object->mat()->scatter(camera.direction, intersect.normal).normalize();
     }
 
     return light;
