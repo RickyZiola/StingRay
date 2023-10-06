@@ -6,14 +6,14 @@
 #include <stdio.h>
 
 Ray StingrayRenderer::camera_ray(const Vec3& uv) {
-    float FOV = 0.5 * 3.1415926535897932; // FOV in radians (set to 90deg)
+    float FOV = 0.7 * 3.1415926535897932; // FOV in radians (set to 90deg)
+    Vec3 eye = Vec3(0.0f, 0.0f, -1.0f);
 
     float angle_xz = (FOV / 2.0f) * uv.x;
-    float angle_yz = (FOV / 2.0f) * uv.y;
+    float angle_yz = (FOV / 2.0f) * uv.y;// - .1 * 3.1415926535897932;
     float loc_z = cos(angle_xz) * cos(angle_yz); // TODO: better camera that doesn't have fisheye distortion and can support FOV > 180
 
-    Vec3 screen_plane = Vec3(uv.x, uv.y, loc_z);  // TODO: Depth of field
-    Vec3 eye = Vec3(0.0f, 0.0f, -1.0f);
+    Vec3 screen_plane = Vec3(sin(angle_xz), sin(angle_yz), loc_z);  // TODO: Depth of field
 
     Vec3 direction = screen_plane.normalize();
     return Ray(eye, direction, true);
@@ -48,8 +48,9 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
 
         // Setup the bounced ray.
         // Move the position along the normal to avoid shadow acne
-        camera.origin = intersect.position + intersect.normal * 0.0001f;
-        camera.direction = intersect.object->mat()->scatter(camera.direction, intersect.normal).normalize();
+        camera.viewRay = true; // helps make glass easier to implement
+        camera.origin = intersect.position;
+        camera = intersect.object->mat()->scatter(camera, intersect.normal);
     }
 
     return light;

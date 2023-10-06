@@ -3,6 +3,7 @@
 
 #include "../renderer/material.hpp"
 #include "../util/vec3.hpp"
+#include "../renderer/ray.hpp"
 
 /**
  * Simple emissive material with a color.
@@ -31,8 +32,8 @@ public:
     /**
      * Scatter a ray. This is arbitrary for this material.
     */
-    Vec3 scatter(const Vec3& rayDir, const Vec3& norm) {
-        return Vec3(1.0).normalize();
+    Ray scatter(Ray& ray, const Vec3& norm) {
+        return ray;
     }
 };
 

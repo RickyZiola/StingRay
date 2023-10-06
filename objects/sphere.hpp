@@ -6,6 +6,7 @@
 #include "../renderer/ray.hpp"
 #include "../renderer/material.hpp"
 #include "scene.hpp"
+#include <cstdio>
 
 /**
  * Sphere class.
@@ -26,20 +27,30 @@ public:
         this->material = mat;
     }
 
+
+    // Thanks to https://raytracing.github.io/books/RayTracingInOneWeekend.html
     /**
      * Check if the given ray intersects the sphere.
      * If the ray is a view ray, the intersection point may be inside the sphere. If not, it must be on the surface.
     */
-    // Thanks to https://raytracing.github.io/books/RayTracingInOneWeekend.html
     HitInfo intersect(Ray& r, StingrayScene *scene) {
-        if (r.viewRay && (r.origin - this->center).length() < this->radius) {
-            return HitInfo { true, &r, 0.0, r.origin, Vec3(0.57735026919), this };
+        Vec3 oc = r.origin - center;
+        float Dococ = oc.dot(oc);
+        if (Dococ < this->radius*this->radius) {
+            if (r.viewRay) { // The intersection can be inside the sphere.
+                return HitInfo { true, &r, 0.0, r.origin, Vec3(1,0,0), this };
+            } else { // We need the back intersection point.
+                Ray newR = Ray(
+                    r.origin - r.direction * (fabs(this->radius) * 2.01),
+                    -r.direction,
+                    r.viewRay );
+                return this->intersect(newR, scene);
+            }
         }
 
-        Vec3 oc = r.origin - center;
         float a = r.direction.dot(r.direction);
         float half_b = oc.dot(r.direction);
-        float c = oc.dot(oc) - radius*radius;
+        float c = Dococ - radius*radius;
         float discriminant = half_b*half_b - a*c;
 
         if (discriminant < 0) {  // Miss

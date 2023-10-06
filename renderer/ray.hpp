@@ -20,8 +20,6 @@ struct HitInfo {
     Object *object;
 };
 
-#include "../objects/object.hpp"
-
 /**
  * Class to represent a ray.
 */

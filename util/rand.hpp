@@ -3,13 +3,19 @@
 
 #include "vec3.hpp"
 
-// Generate a random float.
+/**
+ * Generates a random float between 0 and 1.
+*/
 float randf();
 
-// Random point in the unit sphere.
+/**
+ * Generates a random vector on the unit sphere.
+*/
 Vec3 rand_in_unit_sphere();
 
-// Random point in a hemisphere.
+/**
+ * Generates a random vector in the unit hemisphere definde by normal.
+*/
 Vec3 rand_in_hemisphere(const Vec3& normal);
 
 #endif

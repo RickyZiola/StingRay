@@ -130,6 +130,19 @@ public:
     static Vec3 mix(Vec3 a, Vec3 b, float t) {
         return a + (b - a) * t;
     }
+
+    // Refraction
+    Vec3 refract(const Vec3& normal, float eta1, float eta2) {
+        float cos_theta = normal.dot(-*this);
+        float discriminant = 1.0 - (eta1 / eta2) * (eta1 / eta2) * (1.0 - cos_theta * cos_theta);
+
+        if (discriminant < 0) {
+            // Total internal reflection, return a reflection instead
+            return this->reflect(normal);
+        } else {
+            return  (*this + normal * cos_theta) * (eta1 / eta2) - normal * sqrtf(discriminant);
+        }
+    }
 };
 
 #endif

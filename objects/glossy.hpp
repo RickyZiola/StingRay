@@ -4,6 +4,7 @@
 #include "../renderer/material.hpp"
 #include "../util/vec3.hpp"
 #include "../util/rand.hpp"
+#include "../renderer/ray.hpp"
 
 /**
  * Glossy material with color and roughness.
@@ -35,8 +36,10 @@ public:
     /**
      * Scatter a ray off the material. This mixed between a perfect reflection and a perfect diffuse.
     */
-    Vec3 scatter(const Vec3& rayDir, const Vec3& norm) {
-        return Vec3::mix(rayDir.reflect(norm), (norm + rand_in_unit_sphere()).normalize(), this->roughness);
+    Ray scatter(Ray& ray, const Vec3& norm) {
+        ray.origin = ray.origin + norm * 0.01;
+        ray.direction =  Vec3::mix(ray.direction.reflect(norm), (norm + rand_in_unit_sphere()).normalize(), this->roughness).normalize();
+        return ray;
     }
 };
 

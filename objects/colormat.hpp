@@ -4,6 +4,7 @@
 #include "../renderer/material.hpp"
 #include "../util/vec3.hpp"
 #include "../util/rand.hpp"
+#include "../renderer/ray.hpp"
 
 /**
  * Simple diffuse material.
@@ -31,11 +32,11 @@ public:
 
     /**
      * Scatter a ray on the material.
-     * This is uniform diffuse scattering, I find it looks better than lambertian scattering.
     */
-    Vec3 scatter(const Vec3& rayDir, const Vec3& norm) {
-        return rand_in_hemisphere(norm);
-        //return (norm + rand_in_unit_sphere()).normalize();
+    Ray scatter(Ray& ray, const Vec3& norm) {
+        ray.origin = ray.origin + norm * 0.01;
+        ray.direction = (norm + rand_in_unit_sphere()).normalize();
+        return ray;
     }
 };
 
