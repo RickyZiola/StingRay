@@ -16,7 +16,7 @@ Ray StingrayRenderer::camera_ray(const Vec3& uv) {
     Vec3 screen_plane = Vec3(sin(angle_xz), sin(angle_yz), loc_z);  // TODO: Depth of field
 
     Vec3 direction = screen_plane.normalize();
-    return Ray(eye, direction, true);
+    return Ray(eye, direction, 0);
 }
 
 Vec3 StingrayRenderer::sky_color(const Vec3& dir) {
@@ -46,11 +46,9 @@ Vec3 StingrayRenderer::ray_shader(Ray camera, StingrayScene *scene, int max_boun
         // If the color is black, no further steps will change the render, so leave the loop. This also breaks when the ray hits a light source (with no reflected light).
         if (color.length() < 0.001) break;
 
-        // Setup the bounced ray.
-        // Move the position along the normal to avoid shadow acne
-        camera.viewRay = true; // helps make glass easier to implement
+        camera.intMode = 0; // helps make glass easier to implement
         camera.origin = intersect.position;
-        camera = intersect.object->mat()->scatter(camera, intersect.normal);
+        camera = intersect.object->mat()->scatter(camera, intersect.normal);  // Bounce the ray
     }
 
     return light;

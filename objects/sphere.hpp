@@ -37,13 +37,14 @@ public:
         Vec3 oc = r.origin - center;
         float Dococ = oc.dot(oc);
         if (Dococ < this->radius*this->radius) {
-            if (r.viewRay) { // The intersection can be inside the sphere.
+            if (r.intMode == 0) { // The intersection can be inside the sphere.
                 return HitInfo { true, &r, 0.0, r.origin, Vec3(1,0,0), this };
-            } else { // We need the back intersection point.
+            
+            } else if (r.intMode == 2) { // We need the back intersection point.
                 Ray newR = Ray(
-                    r.origin - r.direction * (fabs(this->radius) * 2.01),
+                    r.origin + r.direction * (fabs(this->radius) * 2.01),
                     -r.direction,
-                    r.viewRay );
+                    r.intMode );
                 return this->intersect(newR, scene);
             }
         }

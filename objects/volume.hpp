@@ -61,31 +61,29 @@ public:
      * Intersect a ray with the volume.
     */
     HitInfo intersect(Ray& r, StingrayScene *scene) {
-        if (!r.viewRay) return HitInfo { false, &r, 0.0, Vec3(), Vec3(), this };
+        if (r.intMode == 0) return HitInfo { false, &r, 0.0, Vec3(), Vec3(), this };
         HitInfo front_int = this->bounds->intersect(r, scene);
         if (!front_int.hit) {
             return front_int;
         }
 
-        Ray back_ray = Ray(front_int.position - front_int.normal * .01, r.direction, false);
+        Ray back_ray = Ray(front_int.position + r.direction * .01, r.direction, 0);
         HitInfo scene_int = scene->intersect(back_ray, scene);
+        back_ray.intMode = 2;
         HitInfo back_int = this->bounds->intersect(back_ray, scene);
-
         if (scene_int.hit && (scene_int.distance < back_int.distance)) back_int = scene_int;
-        if ((!back_int.hit) && scene_int.hit) back_int = scene_int;
 
         if (!back_int.hit) {
-            printf("something has gone very wrong\n");
             return back_int;
         }
 
         float dist = (front_int.position - back_int.position).length();
         bool hit = randf() < (dist * density);
 
-            // cursed, remove asap
-        this->material = (VolumeMaterial*)new EmissiveMaterial(Vec3(dist));
-        front_int.object = this;
-        return front_int;
+        // cursed, remove asap
+        //this->material = (VolumeMaterial *)new EmissiveMaterial(Vec3(dist));
+        //front_int.object = this;
+        //return front_int;
 
         if (!hit) return HitInfo { false, &r, 0.0, Vec3(), Vec3(), this };
 

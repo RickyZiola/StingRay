@@ -35,7 +35,7 @@ public:
     */
     Ray scatter(Ray& ray, const Vec3& norm) {
         ray.origin = ray.origin + norm * 0.01;
-        ray.direction = (norm + rand_in_unit_sphere()).normalize();
+        ray.direction = rand_in_hemisphere(norm);//(norm + rand_in_unit_sphere()).normalize();
         return ray;
     }
 };

@@ -29,15 +29,15 @@ private:
 public:
     Vec3 origin;
     Vec3 direction;
-    bool viewRay;
+    int intMode;
 
     /**
      * Construct a new ray.
     */
-    Ray(Vec3 origin, Vec3 direction, bool view) {
+    Ray(Vec3 origin, Vec3 direction, int intMode) {
         this->origin = origin;
         this->direction = direction;
-        this->viewRay = view;
+        this->intMode = intMode;
     }
 };
 

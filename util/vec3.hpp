@@ -143,6 +143,15 @@ public:
             return  (*this + normal * cos_theta) * (eta1 / eta2) - normal * sqrtf(discriminant);
         }
     }
+
+    // Mod 1
+    Vec3 fract() {
+        return Vec3(
+            fmodf(this->x, 1.0f),
+            fmodf(this->y, 1.0f),
+            fmodf(this->z, 1.0f)
+        );
+    }
 };
 
 #endif
