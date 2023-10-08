@@ -33,7 +33,7 @@ public:
     Vec3 emission() { return Vec3(0.0); }
 
     Ray scatter(Ray& ray, const Vec3& normal) {
-        if (randf() < this->reflection) {
+        if (randf() < this->reflection * (1.0 - ray.direction.dot(normal))) {
             ray.origin = ray.origin + normal * 0.01;
             ray.direction = ray.direction.reflect(normal);
             return ray;

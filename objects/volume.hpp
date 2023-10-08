@@ -61,7 +61,7 @@ public:
      * Intersect a ray with the volume.
     */
     HitInfo intersect(Ray& r, StingrayScene *scene) {
-        if (r.intMode == 0) return HitInfo { false, &r, 0.0, Vec3(), Vec3(), this };
+        if (r.intMode == 2) return HitInfo { false, &r, 0.0, Vec3(), Vec3(), this };
         HitInfo front_int = this->bounds->intersect(r, scene);
         if (!front_int.hit) {
             return front_int;

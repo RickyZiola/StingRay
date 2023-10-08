@@ -96,7 +96,7 @@ void StingrayRenderer::render(int startX, int startY, int endX, int endY, int sa
                 // Antialiasing by offestting the eye position by a small amount
                 Ray camera = Ray (orig_camera.origin + Vec3(randf(), randf(), randf()) * 0.004, orig_camera.direction, true);
                 // Run the ray through the scene. This is where all the work happens.
-                color = color + ray_shader(camera, scene, 32);
+                color = color + ray_shader(camera, scene, 16);
             }
             // Average the samples
             color = color / (float)samples;
